@@ -7,9 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TableViewCell.h"
+#import "headerAndFooterCell.h"
+#import "ExpandCollapseViewModel.h"
 
-@interface ViewController : UIViewController
+#import "headerAndFooterView.h"
 
+@protocol MainTableViewDelegate <NSObject>
+
+- (void) mainTableViewScrollViewDidEndScrolling: (BOOL)flag;
+
+@end
+
+@interface ViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, TableViewCellDelegate, HeaderAndFooterCellDelegate, HeaderAndFooterViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *mainTableView;
+
+@property (weak, nonatomic) id<MainTableViewDelegate> mainTableViewDelegate;
 
 @end
 

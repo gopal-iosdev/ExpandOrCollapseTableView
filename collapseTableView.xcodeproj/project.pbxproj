@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B92275C1C4B511100F4EE47 /* ExpandCollapseViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B92275B1C4B511100F4EE47 /* ExpandCollapseViewModel.m */; };
+		4B92275F1C4B8C7B00F4EE47 /* headerAndFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B92275E1C4B8C7B00F4EE47 /* headerAndFooterView.m */; };
+		4B9227611C4B8C8A00F4EE47 /* headerAndFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B9227601C4B8C8A00F4EE47 /* headerAndFooterView.xib */; };
 		4BBA69A61C495E3000A1B72E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69A51C495E3000A1B72E /* main.m */; };
 		4BBA69A91C495E3000A1B72E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69A81C495E3000A1B72E /* AppDelegate.m */; };
 		4BBA69AC1C495E3000A1B72E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69AB1C495E3000A1B72E /* ViewController.m */; };
@@ -15,6 +18,10 @@
 		4BBA69B41C495E3000A1B72E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA69B21C495E3000A1B72E /* LaunchScreen.storyboard */; };
 		4BBA69BF1C495E3000A1B72E /* collapseTableViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69BE1C495E3000A1B72E /* collapseTableViewTests.m */; };
 		4BBA69CA1C495E3000A1B72E /* collapseTableViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69C91C495E3000A1B72E /* collapseTableViewUITests.m */; };
+		4BBA69DA1C4961FB00A1B72E /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69D81C4961FB00A1B72E /* TableViewCell.m */; };
+		4BBA69DB1C4961FB00A1B72E /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA69D91C4961FB00A1B72E /* TableViewCell.xib */; };
+		4BBA69DF1C4965C200A1B72E /* headerAndFooterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA69DD1C4965C200A1B72E /* headerAndFooterCell.m */; };
+		4BBA69E01C4965C200A1B72E /* headerAndFooterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBA69DE1C4965C200A1B72E /* headerAndFooterCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +42,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B92275A1C4B511100F4EE47 /* ExpandCollapseViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandCollapseViewModel.h; sourceTree = "<group>"; };
+		4B92275B1C4B511100F4EE47 /* ExpandCollapseViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandCollapseViewModel.m; sourceTree = "<group>"; };
+		4B92275D1C4B8C7B00F4EE47 /* headerAndFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headerAndFooterView.h; sourceTree = "<group>"; };
+		4B92275E1C4B8C7B00F4EE47 /* headerAndFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headerAndFooterView.m; sourceTree = "<group>"; };
+		4B9227601C4B8C8A00F4EE47 /* headerAndFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = headerAndFooterView.xib; sourceTree = "<group>"; };
 		4BBA69A11C495E3000A1B72E /* collapseTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = collapseTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BBA69A51C495E3000A1B72E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4BBA69A71C495E3000A1B72E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -51,6 +63,12 @@
 		4BBA69C51C495E3000A1B72E /* collapseTableViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = collapseTableViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BBA69C91C495E3000A1B72E /* collapseTableViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = collapseTableViewUITests.m; sourceTree = "<group>"; };
 		4BBA69CB1C495E3000A1B72E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BBA69D71C4961FB00A1B72E /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		4BBA69D81C4961FB00A1B72E /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
+		4BBA69D91C4961FB00A1B72E /* TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		4BBA69DC1C4965C200A1B72E /* headerAndFooterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headerAndFooterCell.h; sourceTree = "<group>"; };
+		4BBA69DD1C4965C200A1B72E /* headerAndFooterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = headerAndFooterCell.m; sourceTree = "<group>"; };
+		4BBA69DE1C4965C200A1B72E /* headerAndFooterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = headerAndFooterCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +124,21 @@
 				4BBA69AA1C495E3000A1B72E /* ViewController.h */,
 				4BBA69AB1C495E3000A1B72E /* ViewController.m */,
 				4BBA69AD1C495E3000A1B72E /* Main.storyboard */,
+				4BBA69D71C4961FB00A1B72E /* TableViewCell.h */,
+				4BBA69D81C4961FB00A1B72E /* TableViewCell.m */,
+				4BBA69D91C4961FB00A1B72E /* TableViewCell.xib */,
 				4BBA69B01C495E3000A1B72E /* Assets.xcassets */,
 				4BBA69B21C495E3000A1B72E /* LaunchScreen.storyboard */,
 				4BBA69B51C495E3000A1B72E /* Info.plist */,
 				4BBA69A41C495E3000A1B72E /* Supporting Files */,
+				4BBA69DC1C4965C200A1B72E /* headerAndFooterCell.h */,
+				4BBA69DD1C4965C200A1B72E /* headerAndFooterCell.m */,
+				4BBA69DE1C4965C200A1B72E /* headerAndFooterCell.xib */,
+				4B92275A1C4B511100F4EE47 /* ExpandCollapseViewModel.h */,
+				4B92275B1C4B511100F4EE47 /* ExpandCollapseViewModel.m */,
+				4B92275D1C4B8C7B00F4EE47 /* headerAndFooterView.h */,
+				4B92275E1C4B8C7B00F4EE47 /* headerAndFooterView.m */,
+				4B9227601C4B8C8A00F4EE47 /* headerAndFooterView.xib */,
 			);
 			path = collapseTableView;
 			sourceTree = "<group>";
@@ -244,7 +273,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BBA69B41C495E3000A1B72E /* LaunchScreen.storyboard in Resources */,
+				4BBA69DB1C4961FB00A1B72E /* TableViewCell.xib in Resources */,
 				4BBA69B11C495E3000A1B72E /* Assets.xcassets in Resources */,
+				4BBA69E01C4965C200A1B72E /* headerAndFooterCell.xib in Resources */,
+				4B9227611C4B8C8A00F4EE47 /* headerAndFooterView.xib in Resources */,
 				4BBA69AF1C495E3000A1B72E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,8 +303,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BBA69AC1C495E3000A1B72E /* ViewController.m in Sources */,
+				4BBA69DF1C4965C200A1B72E /* headerAndFooterCell.m in Sources */,
+				4B92275F1C4B8C7B00F4EE47 /* headerAndFooterView.m in Sources */,
+				4BBA69DA1C4961FB00A1B72E /* TableViewCell.m in Sources */,
 				4BBA69A91C495E3000A1B72E /* AppDelegate.m in Sources */,
 				4BBA69A61C495E3000A1B72E /* main.m in Sources */,
+				4B92275C1C4B511100F4EE47 /* ExpandCollapseViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +534,7 @@
 				4BBA69D01C495E3000A1B72E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BBA69D11C495E3000A1B72E /* Build configuration list for PBXNativeTarget "collapseTableViewTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +543,7 @@
 				4BBA69D31C495E3000A1B72E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BBA69D41C495E3000A1B72E /* Build configuration list for PBXNativeTarget "collapseTableViewUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +552,7 @@
 				4BBA69D61C495E3000A1B72E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

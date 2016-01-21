@@ -20,4 +20,11 @@
     // Configure the view for the selected state
 }
 
+
+- (IBAction)expandOrCollapseBtnClicked:(UIButton *)sender {
+//    NSLog(@"headerAndFooterCell, expandOrCollapseBtnClicked with Tag: %ld",sender.tag);
+    [self.headerAndFooterCelldelegate expandCellButtonTappedForHeaderCellWithSubView:sender.tag];
+}
+
+
 @end

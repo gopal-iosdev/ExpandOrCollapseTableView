@@ -7,7 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+//#import "ViewController.h"
 
-@interface TableViewCell : UITableViewCell
+@protocol TableViewCellDelegate <NSObject>
+
+- (void) cellScrollViewDidEndScrolling: (BOOL)flag;
+
+@end
+
+@interface TableViewCell : UITableViewCell<UITableViewDataSource, UITableViewDelegate>
+
+
+@property (weak, nonatomic) IBOutlet UITableView *cellTableView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cellTableViewHeightConstraint;
+
+@property (weak, nonatomic) id<TableViewCellDelegate> cellDelegate;
+
+//@property ViewController *vc;
+
+- (void) callCellTableView;
+
+@property BOOL reloadFlag;
+@property BOOL initialLoading;
 
 @end

@@ -18,4 +18,11 @@
 }
 */
 
+- (IBAction)expandOrCollapseBtnClicked:(UIButton *)sender {
+//        NSLog(@"headerAndFooterCell, expandOrCollapseBtnClicked with Tag: %ld",sender.tag);
+    [self.headerAndFooterViewdelegate expandCellButtonTappedForHeaderView:sender.tag];
+}
+
+
+
 @end
