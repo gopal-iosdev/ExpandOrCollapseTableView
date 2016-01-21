@@ -25,7 +25,9 @@
 @property (nonatomic, strong) NSMutableArray *maintainanceInformationTableDataArray;
 @property (nonatomic, strong) NSMutableArray *finalCustCountTableDataArray;
 
-@property BOOL loadData;
+@property BOOL expandFooterViewFlag;
+
+@property ExpandCollapseViewModel *currentExpandOrCollapseCellVM;
 
 
 @end
@@ -34,18 +36,15 @@
 
 static NSString *tableViewCellIdentifier = @"TableViewCell";
 static NSString *headerAndFooterCellIdentifier = @"headerAndFooterCell";
-
 static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
+static NSString *sectionHeaderAndFooterViewIdentifier = @"SectionHeaderAndFooterView";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self registerNibs];
     self.initialLoadingFlag = YES;
-//    self.mainTableView.scrollEnabled = NO;
-  
-    if (!self.loadData)
-        [self loadDataIntoArrays];
+    [self loadDataIntoArrays];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,12 +62,9 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-//    return 20;
-    NSInteger count = 0;
-    
-    count = [[self returnArrayBasedOnSection:section] count];
-    
-    return count;
+    ExpandCollapseViewModel *vm;
+    vm = [self.flightInfoTableDataArray objectAtIndex:section];
+    return vm.isCellExpanded ? [[self returnArrayBasedOnSection:section] count] : 0;
 }
 
 #pragma mark UITableView View Header Delegate Methods
@@ -87,95 +83,78 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     ExpandCollapseViewModel *vm;
-    
-    if (!self.loadData)
-        [self loadDataIntoArrays];
     vm = [self.flightInfoTableDataArray objectAtIndex:section];
 //    if (vm.isCellExpanded) {
-//        NSLog(@"heightForFooterInSection isCellExpanded For Cell: %@",vm.cellTitle);
+//        NSLog(@"heightForFooterInSection %ld For Cell: %@", section, vm.cellTitle);
 //    }
-    return vm.isCellExpanded ? vm.cellHeight : 0;
-    
-//    return 44;
+    return vm.isCellExpanded ? vm.cellHeight : 0;//FLT_MIN
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *footerView = [self doHeaderAndFooterViewFor: NO forSection: section];
-    
     return footerView;
 }
 
-- (UIView *) doHeaderAndFooterViewFor:(BOOL) headerView forSection: (NSInteger)section
-{
-//    headerAndFooterCell *footerView = [self.mainTableView dequeueReusableCellWithIdentifier:headerAndFooterCellIdentifier];
-//    
+
+//- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section NS_AVAILABLE_IOS(6_0);
+//{
 //    ExpandCollapseViewModel *vm;
 //    vm = [self.flightInfoTableDataArray objectAtIndex:section];
+//    NSLog(@"didEndDisplayingHeaderView %@ For Section: %ld", vm.cellTitle, section);
+//}
+//- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section NS_AVAILABLE_IOS(6_0);
+//{
+//    ExpandCollapseViewModel *vm;
+//    vm = [self.flightInfoTableDataArray objectAtIndex:section];
+//    NSLog(@"didEndDisplayingFooterView %@ For Section: %ld", vm.cellTitle, section);
+//}
+
+- (UIView *) doHeaderAndFooterViewFor:(BOOL) headerView forSection: (NSInteger)section
+{
+    ExpandCollapseViewModel *vm;
+    vm = [self.flightInfoTableDataArray objectAtIndex:section];
+//    headerAndFooterView *headerFooterView = [[[NSBundle mainBundle] loadNibNamed:@"headerAndFooterView" owner:self options:nil] objectAtIndex:0];
+//    headerAndFooterView *headerFooterView = (headerAndFooterView *)[self.mainTableView dequeueReusableHeaderFooterViewWithIdentifier:headerAndFooterViewIdentifier];
 //    
 //    if (headerView) {
-////        footerView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"Header: %ld",section];
-//        footerView.headerAndFooterCellTitleLabel.text = vm.cellTitle;
-//        footerView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Expand"];
-////        NSLog(@"viewForHeaderInSection, HEADER: %ld",section);
+//        headerFooterView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"%@ Header", vm.cellTitle];;
+//        headerFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Expand"];
+//        headerFooterView.expandOrCollapseImgVwHeightConstraint.constant = vm.isCellExpanded ? 0 : 44;
+//        headerFooterView.expandOrCollapseButton.userInteractionEnabled = vm.isCellExpanded ? NO : YES;
 //    }
 //    else
 //    {
-////        footerView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"Footer: %ld",section];
-//        footerView.headerAndFooterCellTitleLabel.text = vm.cellTitle;
-//        footerView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Collapse"];
-////        NSLog(@"viewForFooterInSection, FOOTER: %ld",section);
+//        headerFooterView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"%@ Footer", vm.cellTitle];
+//        headerFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Collapse"];
+//        NSLog(@"viewForFooterInSection, FOOTER: %ld",section);
+//        if (self.expandFooterViewFlag) {
+//            self.expandFooterViewFlag = NO;
+//        }
 //    }
-//    footerView.tag = section;
-//    footerView.expandOrCollapseButton.tag = section;
-//    footerView.headerAndFooterCelldelegate = self;
-////    NSLog(@"doHeaderAndFooterViewFor, setting Tag: %ld",section);
-//    return footerView;//contentView
+//    headerFooterView.tag = section;
+//    headerFooterView.expandOrCollapseButton.tag = section;
+//    headerFooterView.headerAndFooterViewdelegate = self;
+//    return headerFooterView;
     
+    SectionHeaderAndFooterView *sectionheaderAndFooterView = [self.mainTableView dequeueReusableHeaderFooterViewWithIdentifier:sectionHeaderAndFooterViewIdentifier];
     
-    ExpandCollapseViewModel *vm;
-    vm = [self.flightInfoTableDataArray objectAtIndex:section];
-    headerAndFooterView *headerFooterView = [[[NSBundle mainBundle] loadNibNamed:@"headerAndFooterView" owner:self options:nil] objectAtIndex:0];
     if (headerView) {
-        //        footerView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"Header: %ld",section];
-        headerFooterView.headerAndFooterCellTitleLabel.text = vm.cellTitle;
-        headerFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Expand"];
-        headerFooterView.expandOrCollapseImgVwHeightConstraint.constant = vm.isCellExpanded ? 0 : 44;
-        headerFooterView.expandOrCollapseButton.userInteractionEnabled = vm.isCellExpanded ? NO : YES;
-        //        NSLog(@"viewForHeaderInSection, HEADER: %ld",section);
+        sectionheaderAndFooterView.titleLabel.text = [NSString stringWithFormat:@"%@ Header", vm.cellTitle];;
+        sectionheaderAndFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Expand"];
+//        sectionheaderAndFooterView.expandOrCollapseImgVwHeightConstraint.constant = vm.isCellExpanded ? 0 : 44;
+//        sectionheaderAndFooterView.expandOrCollapseBtn.userInteractionEnabled = vm.isCellExpanded ? NO : YES;
     }
     else
     {
-        //        footerView.headerAndFooterCellTitleLabel.text = [NSString stringWithFormat:@"Footer: %ld",section];
-        headerFooterView.headerAndFooterCellTitleLabel.text = vm.cellTitle;
-        headerFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Collapse"];
-        //        NSLog(@"viewForFooterInSection, FOOTER: %ld",section);
+        sectionheaderAndFooterView.titleLabel.text = [NSString stringWithFormat:@"%@ Footer", vm.cellTitle];
+        sectionheaderAndFooterView.expandOrCollapseImgVw.image = [UIImage imageNamed:@"Collapse"];
+//        NSLog(@"viewForFooterInSection, FOOTER: %ld",section);
     }
-    headerFooterView.tag = section;
-    headerFooterView.expandOrCollapseButton.tag = section;
-    headerFooterView.headerAndFooterViewdelegate = self;
-
-    //    [nibView setUserInteractionEnabled:YES];
-    return headerFooterView;
-
-}
-
-- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section NS_AVAILABLE_IOS(6_0);
-{
-//    NSLog(@"didEndDisplayingHeaderView, header: %ld",section);
-}
-- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section NS_AVAILABLE_IOS(6_0);
-{
-//    NSLog(@"didEndDisplayingFooterView, footer: %ld",section);
-//    self.mainTableView.scrollEnabled = NO;
-//    [self.mainTableViewDelegate mainTableViewScrollViewDidEndScrolling:YES];
-//    NSIndexPath *indexPath = [[self.mainTableView indexPathsForVisibleRows] objectAtIndex:([[self.mainTableView indexPathsForVisibleRows] count] - 1)];
-//    [self.mainTableView reloadSections:(section + 1) withRowAnimation:UITableViewRowAnimationNone];
-    
-//    NSLog(@"IndexPaths Count for VisibleRows: %ld",[[self.mainTableView indexPathsForVisibleRows] count]);
-//    NSLog(@"didEndDisplayingFooterView, footer: %ld, self.mainTableView.scrollEnabled: %d", section,self.mainTableView.scrollEnabled);
-    self.reloadFlag = YES;
-    [self.mainTableView reloadRowsAtIndexPaths:[self.mainTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    sectionheaderAndFooterView.tag = section;
+    sectionheaderAndFooterView.expandOrCollapseBtn.tag = section;
+    sectionheaderAndFooterView.sectionHeaderAndFooterViewdelegate = self;
+    return sectionheaderAndFooterView;
 }
 
 
@@ -184,58 +163,17 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-//    TableViewCell *cell ;
-//    
-//    cell = [self.mainTableView dequeueReusableCellWithIdentifier:tableViewCellIdentifier];
-//    
-//    if (self.reloadFlag)
-//    {
-//        NSLog(@"cellForRowAtIndexPath, reloadFlag: %d, self.mainTableView.scrollEnabled: %d", self.reloadFlag, self.mainTableView.scrollEnabled);
-//        cell.reloadFlag = self.reloadFlag;
-//        self.reloadFlag = NO;
-//    }
-//    
-//    if (self.initialLoadingFlag)
-//    {
-//        cell.initialLoading = YES;
-//        self.initialLoadingFlag = NO;
-//    }
-//    
-//    [cell callCellTableView];
-//    cell.cellTableViewHeightConstraint.constant = (self.view.frame.size.height - 80);
-////    [cell.cellTableView reloadData];
-//    
-//    cell.cellDelegate = self;
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    return cell;
-    
-    
     static NSString *simpleTableIdentifier = @"SimpleTableItem";
     ExpandCollapseViewModel *vm;
     NSMutableArray *array = [self returnArrayBasedOnSection:indexPath.section];
     vm = [array objectAtIndex:indexPath.row];
-    
-//    if (vm.isCellExpanded) {
-//        NSLog(@"Cell For Row isCellExpanded For Cell: %@",vm.cellTitle);
-//    }
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
-    
-//    cell.textLabel.text = [NSString stringWithFormat:@"Section: %ld - Cell: %ld", indexPath.section, (long)indexPath.row];
-    
     cell.tag = indexPath.row;
-    
     cell.textLabel.text = vm.cellTitle;
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
-    //     self.cellTableView.scrollEnabled = YES;
-    
     return cell;
 }
 
@@ -244,11 +182,7 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 {
-//    return self.view.frame.size.height - 88;
-//    return 44;
     ExpandCollapseViewModel *vm;
-    if (!self.loadData)
-        [self loadDataIntoArrays];
     NSMutableArray *array = [self returnArrayBasedOnSection:indexPath.section];
     vm = [array objectAtIndex:indexPath.row];
     return vm.isCellExpanded ? vm.cellHeight : 0;
@@ -258,60 +192,9 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 {
     [self.mainTableView registerNib:[UINib nibWithNibName:@"TableViewCell" bundle:nil] forCellReuseIdentifier:tableViewCellIdentifier];
     [self.mainTableView registerNib:[UINib nibWithNibName:@"headerAndFooterCell" bundle:nil] forCellReuseIdentifier:headerAndFooterCellIdentifier];
-}
-
-# pragma mark Scroll View Delegate Methods
-
--(void)scrollViewDidScroll: (UIScrollView*)scrollView
-{
-    //    self.cellTableView.scrollEnabled = YES;
-    [self updateScrollView:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
-{
-    if (!decelerate)
-    {
-        //        NSLog(@"scrollViewDidEndDragging, visible cells count: %d, Current Visible Cell Title: %@", [[self.ualFlightInfoMainVCTableVw indexPathsForVisibleRows] count], [[self returnCurrentVisibleCellVM] cellTitle]);
-        //        [self updateScrollView:scrollView];
-    }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;      // called when scroll view grinds to a halt
-{
-    //    NSLog(@"scrollViewDidEndDecelerating, visible cells count: %d, Current Visible Cell Title: %@", [[self.ualFlightInfoMainVCTableVw indexPathsForVisibleRows] count], [[self returnCurrentVisibleCellVM] cellTitle]);
-    //    [self updateScrollView:scrollView];
-}
-
-- (void) updateScrollView: (UIScrollView *)scrollView
-{
-    float scrollViewHeight = scrollView.frame.size.height;
-    float scrollContentSizeHeight = scrollView.contentSize.height;
-    float scrollOffset = scrollView.contentOffset.y;
     
-//    self.mainTableView.scrollEnabled = YES;
-//    NSLog(@"mainTableView, updateScrollView");
-    if (scrollOffset == 0)
-    {
-        // then we are at the top
-//        NSLog(@"mainTableView, ScrollView Reaches TOP");
-//        self.mainTableView.scrollEnabled = NO;
-        
-    }
-    else if ((scrollViewHeight + scrollOffset) >= (scrollContentSizeHeight - 5))
-    {
-        // then we are at the end
-//        NSIndexPath *indexPath = [[self.mainTableView indexPathsForVisibleRows] objectAtIndex:([[self.mainTableView indexPathsForVisibleRows] count] - 1)];
-//        NSLog(@"mainTableView, ScrollView Reaches End, row: %ld",indexPath.row);
-//        self.mainTableView.scrollEnabled = NO;
-    }
-    
-}
-
-# pragma mark - tableView Cell delegate
-- (void) cellScrollViewDidEndScrolling: (BOOL)flag;
-{
-    self.mainTableView.scrollEnabled = flag;
-//    NSLog(@"mainTableView, cellScrollViewDidEndScrolling DELEGATE Method with Flag: %d",flag);
+    [self.mainTableView registerNib:[UINib nibWithNibName:@"headerAndFooterView" bundle:nil] forHeaderFooterViewReuseIdentifier:headerAndFooterViewIdentifier];
+    [self.mainTableView registerNib:[UINib nibWithNibName:@"SectionHeaderAndFooterView" bundle:nil] forHeaderFooterViewReuseIdentifier:sectionHeaderAndFooterViewIdentifier];
 }
 
 
@@ -320,6 +203,7 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 - (void) loadDataIntoArrays
 {
     self.flightInfoTableDataArray = [[NSMutableArray alloc] init];
+    
     [self loadCrewDataIntoArray];
     [self loadFlightDetailsIntoArray];
     [self loadCrewMessagesIntoArray];
@@ -327,8 +211,6 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
     [self loadPOIIntoArray];
     [self loadMIIntoArray];
     [self loadFinalCustCountIntoArray];
-    
-    self.loadData = YES;
 }
 
 - (void) loadCrewDataIntoArray
@@ -343,18 +225,19 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Crew_Data;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"Crew Data Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 0 Cell: %d",i];//Crew Data
         [self.crewDataTableDataArray addObject:vm];
         totalHeightForCrewData += vm.cellHeight;
     }
     
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"Crew Data";
+    vm.cellTitle = @"Section 0";//@"Crew Data"
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Crew_Data;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.crewDataTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForCrewData + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -372,18 +255,19 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Flight_Details;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"Flight Details Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 1 Cell: %d",i];//Flight Details
         [self.flightDetailsTableDataArray addObject:vm];
         totalHeightForFlightDetails += vm.cellHeight;
     }
     
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"Flight Details";
+    vm.cellTitle = @"Section 1";//@"Flight Details"
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Flight_Details;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.flightDetailsTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForFlightDetails + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -401,18 +285,19 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Crew_Messages_And_PA_Announcements;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"Crew Messages Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 2 Cell: %d",i];//Crew Messages
         [self.crewMessagesTableDataArray addObject:vm];
         totalHeightForCrewMessages += vm.cellHeight;
     }
     
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"Crew Messages";
+    vm.cellTitle = @"Section 2";//@"Crew Messages"
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Crew_Messages_And_PA_Announcements;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.crewMessagesTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForCrewMessages + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -430,17 +315,18 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Amenities;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"Amenities Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 3 Cell: %d",i];
         [self.amenitiesTableDataArray addObject:vm];
         totalHeightForAmenities += vm.cellHeight;
     }
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"Amenities";
+    vm.cellTitle = @"Section 3";
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Amenities;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.amenitiesTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForAmenities + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -457,17 +343,18 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = PassengersOfInterest;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"POI Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 4 Cell: %d",i];
         [self.passengersOfInterestTableDataArray addObject:vm];
         totalHeightForPOI += vm.cellHeight;
     }
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"POI";
+    vm.cellTitle = @"Section 4";
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = PassengersOfInterest;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.passengersOfInterestTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForPOI + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -485,17 +372,18 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Maintainance_Information;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"MI Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 5 Cell: %d",i];
         [self.maintainanceInformationTableDataArray addObject:vm];
         totalHeightForMI += vm.cellHeight;
     }
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"MI";
+    vm.cellTitle = @"Section 5";
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Maintainance_Information;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.maintainanceInformationTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForMI + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -513,17 +401,18 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
         vm.isCellExpanded = NO;
         vm.cellSectionType = Final_Customer_Count;
         vm.cellHeight = 44;
-        vm.cellTitle = [NSString stringWithFormat:@"FCC Cell: %d",i];
+        vm.cellTitle = [NSString stringWithFormat:@"Section 6 Cell: %d",i];
         [self.finalCustCountTableDataArray addObject:vm];
         totalHeightForFCC += vm.cellHeight;
     }
     vm = [ExpandCollapseViewModel new];
-    vm.cellTitle = @"FCC";
+    vm.cellTitle = @"Section 6";
     vm.isCellTypeHeaderWithSubView = YES;
     vm.isCellExpanded = NO;
     vm.isSectionExpanded = NO;
     vm.cellSectionType = Final_Customer_Count;
     vm.cellHeight = 44;
+    vm.sectionDataArray = [self.finalCustCountTableDataArray mutableCopy];
     vm.cellExpandedHeight = totalHeightForFCC + 44 + 44;// header + footer heights
     [self.flightInfoTableDataArray addObject:vm];
 }
@@ -532,33 +421,9 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 - (NSMutableArray *) returnArrayBasedOnSection: (NSInteger) section
 {
     NSMutableArray *array;
-    switch (section) {
-        case 0:
-            array = self.crewDataTableDataArray;
-            break;
-        case 1:
-            array = self.flightDetailsTableDataArray;
-            break;
-        case 2:
-            array = self.crewMessagesTableDataArray;
-            break;
-        case 3:
-            array = self.amenitiesTableDataArray;
-            break;
-        case 4:
-            array = self.passengersOfInterestTableDataArray;
-            break;
-        case 5:
-            array = self.maintainanceInformationTableDataArray;
-            break;
-        case 6:
-            array = self.finalCustCountTableDataArray;
-            break;
-            
-        default:
-            break;
-    }
-    
+    ExpandCollapseViewModel *vm;
+    vm = [self.flightInfoTableDataArray objectAtIndex:section];
+    array = [vm.sectionDataArray mutableCopy];
     return array;
 }
 
@@ -567,66 +432,194 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
 
 
 - (void) expandCellButtonTappedForHeaderCellWithSubView:(NSInteger)cellTag;
-{
-    NSMutableArray *array = [self returnArrayBasedOnSection:cellTag];
-    
+{    
     ExpandCollapseViewModel *cellVM = [self.flightInfoTableDataArray objectAtIndex:cellTag];//[cell tag]
-    
     cellVM.isCellExpanded = !cellVM.isCellExpanded;
     cellVM.isSectionExpanded = !cellVM.isSectionExpanded;
+    
+    self.currentExpandOrCollapseCellVM = cellVM;
+    self.expandFooterViewFlag = cellVM.isCellExpanded;
 //    NSLog(@"expandCellButtonTappedForHeaderCellWithSubView with Tag: %ld expandedFlag: %d", cellTag, cellVM.isCellExpanded);
     
-    if (cellVM.cellSectionType == Crew_Data) {
-         [self setExpandFlagsForSectionType:Crew_Data withSectionDataArray:self.crewDataTableDataArray];
-    }
-    else if (cellVM.cellSectionType == Flight_Details) {
-        [self setExpandFlagsForSectionType:Flight_Details withSectionDataArray:self.flightDetailsTableDataArray];
-    }
-    else if (cellVM.cellSectionType == Crew_Messages_And_PA_Announcements) {
-         [self setExpandFlagsForSectionType:Crew_Messages_And_PA_Announcements withSectionDataArray:self.crewMessagesTableDataArray];
-    }
-    else if (cellVM.cellSectionType == Amenities) {
-        [self setExpandFlagsForSectionType:Amenities withSectionDataArray:self.amenitiesTableDataArray];
-    }
-    else if (cellVM.cellSectionType == PassengersOfInterest) {
-        [self setExpandFlagsForSectionType:PassengersOfInterest withSectionDataArray:self.passengersOfInterestTableDataArray];
-    }
-    else if (cellVM.cellSectionType == Maintainance_Information) {
-        [self setExpandFlagsForSectionType:Maintainance_Information withSectionDataArray:self.maintainanceInformationTableDataArray];
-    }
-    else if (cellVM.cellSectionType == Final_Customer_Count) {
-        [self setExpandFlagsForSectionType:Final_Customer_Count withSectionDataArray:self.finalCustCountTableDataArray];
-    }
+    [self setExpandFlagsForCellSectionArray:cellVM];
     
-    [UIView beginAnimations:@"cellExpandAnim" context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    if (cellVM.cellSectionType == Crew_Data) {
+//         [self setExpandFlagsForSectionType:Crew_Data withSectionDataArray:self.crewDataTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == Flight_Details) {
+//        [self setExpandFlagsForSectionType:Flight_Details withSectionDataArray:self.flightDetailsTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == Crew_Messages_And_PA_Announcements) {
+//         [self setExpandFlagsForSectionType:Crew_Messages_And_PA_Announcements withSectionDataArray:self.crewMessagesTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == Amenities) {
+//        [self setExpandFlagsForSectionType:Amenities withSectionDataArray:self.amenitiesTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == PassengersOfInterest) {
+//        [self setExpandFlagsForSectionType:PassengersOfInterest withSectionDataArray:self.passengersOfInterestTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == Maintainance_Information) {
+//        [self setExpandFlagsForSectionType:Maintainance_Information withSectionDataArray:self.maintainanceInformationTableDataArray];
+//    }
+//    else if (cellVM.cellSectionType == Final_Customer_Count) {
+//        [self setExpandFlagsForSectionType:Final_Customer_Count withSectionDataArray:self.finalCustCountTableDataArray];
+//    }
     
-    [UIView setAnimationDuration:0.8];
-    
-    /// use CATransaction so we can capture a CompletionBlock
-    //  after the UITableView animation is completed
-    
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^
-     {
+//    [UIView beginAnimations:@"cellExpandAnim" context:nil];
+//    [UIView setAnimationBeginsFromCurrentState:YES];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    
+//    [UIView setAnimationDuration:0.5];
+//    
+//    /// use CATransaction so we can capture a CompletionBlock
+//    //  after the UITableView animation is completed
+//    
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^
+//     {
 //         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellTag inSection:0];//[cell tag]
 //         NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
-         NSRange range = NSMakeRange(cellTag, 1);
-         NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
-         NSLog(@"expandCellButtonTappedForHeaderCellWithSubView, Section: %@", section);
-         [self.mainTableView beginUpdates];
+//         NSRange range = NSMakeRange(cellTag, 1);
+//         NSIndexSet *section = [NSIndexSet indexSetWithIndexesInRange:range];
+//         NSLog(@"expandCellButtonTappedForHeaderCellWithSubView, Section: %@", section);
+////         NSLog(@"expandCellButtonTappedForHeaderCellWithSubView, indexPaths: %@", indexPaths);
+////         [self.mainTableView beginUpdates];
 //         [self.mainTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        [self.mainTableView reloadSections:section withRowAnimation:UITableViewRowAnimationNone];
-         [self.mainTableView endUpdates];
-     }];
+//        [self.mainTableView reloadSections:section withRowAnimation:UITableViewRowAnimationNone];
+////         [self.mainTableView endUpdates];
+//     }];
+//
+//    // finally, do the update on the table - this animates our cell heights
+//    [self.mainTableView beginUpdates];
+//    [self.mainTableView endUpdates];
+//    [CATransaction commit];
+//    [UIView commitAnimations];
     
-    // finally, do the update on the table - this animates our cell heights
+    
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+//    if (indexPath.row == 0) {
+//        //reload specific section animated
+//        NSRange range   = NSMakeRange(indexPath.section, 1);
+//        NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+//        [self performSelector:@selector(reloadSectionsWithcellTag:) withObject:sectionToReload afterDelay:0.2];
+//    }
+    
+//    [CATransaction begin];
+//    {
+//        [CATransaction setAnimationDuration:10];
+//        [CATransaction setCompletionBlock:^{
+//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+//            NSRange range   = NSMakeRange(indexPath.section, 1);
+//            NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+//            [self.mainTableView beginUpdates];
+//            [self.mainTableView reloadSections:sectionToReload withRowAnimation:UITableViewRowAnimationNone];
+//            [self.mainTableView endUpdates];
+//        }];
+//    }
+////    [self.mainTableView beginUpdates];
+////    [self.mainTableView endUpdates];
+//    [CATransaction commit];
+    
+//    CATransition *animation = [CATransition animation];
+////    [animation setType:nil];
+//    [animation setDuration:1.0];
+//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [animation setFillMode:@"extended"];
+//    [[self.mainTableView layer] addAnimation:animation forKey:@"reloadAnimation"];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+//    NSRange range   = NSMakeRange(indexPath.section, 1);
+//    NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+////    [self.mainTableView beginUpdates];
+//    [self.mainTableView reloadSections:sectionToReload withRowAnimation:UITableViewRowAnimationNone];
+////    [self.mainTableView endUpdates];
+    
+//    [UIView animateWithDuration:0.8 animations:^{
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+//        NSRange range   = NSMakeRange(indexPath.section, 1);
+//        NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+//            [self.mainTableView beginUpdates];
+//        [self.mainTableView reloadSections:sectionToReload withRowAnimation:UITableViewRowAnimationNone];
+//            [self.mainTableView endUpdates];
+//    }];
+//    [self.mainTableView beginUpdates];
+//    [self.mainTableView endUpdates];
+
+//    [CATransaction begin];
+//    {
+//        [CATransaction setCompletionBlock:^{
+//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+//            NSRange range   = NSMakeRange(indexPath.section, 1);
+//            NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+//            //    [self.mainTableView beginUpdates];
+//            [self.mainTableView reloadSections:sectionToReload withRowAnimation:UITableViewRowAnimationNone];
+//            //    [self.mainTableView endUpdates];
+//        }];
+//    }
+//    [CATransaction commit];
+
+    UITableViewRowAnimation rowAnimation = UITableViewRowAnimationBottom;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+    NSRange range   = NSMakeRange(indexPath.section, 1);
+    NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
     [self.mainTableView beginUpdates];
+    [self.mainTableView reloadSections:sectionToReload withRowAnimation:rowAnimation];
+//    [self.mainTableView reloadData];
     [self.mainTableView endUpdates];
-    [CATransaction commit];
-    [UIView commitAnimations];
+    
+//    NSInteger countOfRowsToInsert = [cellVM.sectionDataArray count];
+//    NSMutableArray *indexPathsToInsertOrDelete = [[NSMutableArray alloc] init];
+//    for (NSInteger i = 0; i < countOfRowsToInsert; i++) {
+//        [indexPathsToInsertOrDelete addObject:[NSIndexPath indexPathForRow:i inSection:cellTag]];
+//    }
+//    
+//    UITableViewRowAnimation insertRowAnimation = UITableViewRowAnimationBottom;
+//    UITableViewRowAnimation deleteRowAnimation = UITableViewRowAnimationTop;
+    
+//    [self.mainTableView reloadRowsAtIndexPaths:indexPathsToInsertOrDelete withRowAnimation:insertRowAnimation];
+    
+//    if (cellVM.isCellExpanded) {
+//        [self.mainTableView beginUpdates];
+//        [self.mainTableView insertRowsAtIndexPaths:indexPathsToInsertOrDelete withRowAnimation:insertRowAnimation];
+//        [self.mainTableView endUpdates];
+//    }
+//    else
+//    {
+//        [self.mainTableView beginUpdates];
+//        [self.mainTableView deleteRowsAtIndexPaths:indexPathsToInsertOrDelete withRowAnimation:deleteRowAnimation];
+//        [self.mainTableView endUpdates];
+//    }
+    
+//    [UIView beginAnimations:@"cellExpandAnim" context:nil];
+//    [UIView setAnimationBeginsFromCurrentState:YES];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationDuration:0.5];
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^
+//     {
+//         [self.mainTableView beginUpdates];
+//         if (cellVM.isCellExpanded)
+//             [self.mainTableView insertRowsAtIndexPaths:indexPathsToInsertOrDelete withRowAnimation:UITableViewRowAnimationNone];
+//         else
+//             [self.mainTableView deleteRowsAtIndexPaths:indexPathsToInsertOrDelete withRowAnimation:UITableViewRowAnimationNone];
+//         [self.mainTableView endUpdates];
+//     }];
+////    [self.mainTableView beginUpdates];
+////    [self.mainTableView endUpdates];
+//    [CATransaction commit];
+//    [UIView commitAnimations];
+
 }
+
+//- (void) reloadSectionsWithcellTag:(NSIndexSet *)sectionToReload
+//{
+//    
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^
+//     {
+//         [self.mainTableView reloadSections:sectionToReload withRowAnimation:UITableViewRowAnimationFade];//
+//    }];
+//    [CATransaction commit];
+//}
 
 #pragma mark - Method For Setting the isCellExpanded to YES for saving the User Defaults
 
@@ -644,10 +637,53 @@ static NSString *headerAndFooterViewIdentifier = @"headerAndFooterView";
     }
 }
 
+
+- (void) setExpandFlagsForCellSectionArray : (ExpandCollapseViewModel *)cellVM
+{
+    ExpandCollapseViewModel *vm;
+    for (int i =0; i < cellVM.sectionDataArray.count; i++) {
+        vm = cellVM.sectionDataArray[i];
+        if (vm.cellSectionType == cellVM.cellSectionType) {
+            vm.isCellExpanded = !vm.isCellExpanded;
+            if (vm.isCellTypeHeader) {
+                break;
+            }
+        }
+    }
+}
+
+
+
 - (void) expandCellButtonTappedForHeaderView: (NSInteger)cellTag;
 {
-//    NSLog(@"expandCellButtonTappedForHeaderView with Tag: %ld", cellTag);
     [self expandCellButtonTappedForHeaderCellWithSubView:cellTag];
 }
+
+- (void) expandOrCollapseButtonTappedForHeaderOrFooterView:(NSInteger)cellTag;
+{
+    ExpandCollapseViewModel *cellVM = [self.flightInfoTableDataArray objectAtIndex:cellTag];//[cell tag]
+    cellVM.isCellExpanded = !cellVM.isCellExpanded;
+    cellVM.isSectionExpanded = !cellVM.isSectionExpanded;
+    
+    self.currentExpandOrCollapseCellVM = cellVM;
+    self.expandFooterViewFlag = cellVM.isCellExpanded;
+//    NSLog(@"expandCellButtonTappedForHeaderCellWithSubView with Tag: %ld expandedFlag: %d", cellTag, cellVM.isCellExpanded);
+    [self setExpandFlagsForCellSectionArray:cellVM];
+    
+//    UIView *footerView = [self.mainTableView footerViewForSection:cellTag];
+//    NSLog(@"expandOrCollapseButtonTappedForHeaderOrFooterView, BEFORE RELOAD current footer view height for Section: %ld is %f", cellTag, self.mainTableView.sectionFooterHeight);
+    
+    UITableViewRowAnimation rowAnimation = UITableViewRowAnimationNone;//UITableViewRowAnimationBottom
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:cellTag];
+    NSRange range   = NSMakeRange(indexPath.section, 1);
+    NSIndexSet *sectionToReload = [NSIndexSet indexSetWithIndexesInRange:range];
+    [self.mainTableView beginUpdates];
+    [self.mainTableView reloadSections:sectionToReload withRowAnimation:rowAnimation];
+    [self.mainTableView endUpdates];
+    
+//    NSLog(@"expandOrCollapseButtonTappedForHeaderOrFooterView, AFTER RELOAD current footer view height for Section: %ld is %f", cellTag, self.mainTableView.sectionFooterHeight);
+}
+
+
 
 @end

@@ -28,6 +28,8 @@
 @property (nonatomic, assign) int itemType; // cell Type
 @property (nonatomic, assign) BOOL hasData;
 
+@property (nonatomic, strong) NSArray *sectionDataArray;
+
 
 typedef enum{
     None,

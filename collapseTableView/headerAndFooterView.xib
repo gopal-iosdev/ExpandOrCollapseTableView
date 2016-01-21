@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -17,9 +17,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpI-ZF-CEq">
-                    <rect key="frame" x="10" y="15" width="256" height="21"/>
+                    <rect key="frame" x="10" y="15" width="42" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="aFz-1p-LXb"/>
+                        <constraint firstAttribute="height" constant="21" id="UdD-gg-E4P"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <nil key="highlightedColor"/>
@@ -27,8 +27,8 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EZz-up-mSM">
                     <rect key="frame" x="276" y="0.0" width="44" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="Sxf-ti-OS1"/>
-                        <constraint firstAttribute="width" constant="44" id="e4c-Of-tlp"/>
+                        <constraint firstAttribute="height" constant="44" id="9RK-q8-xXT"/>
+                        <constraint firstAttribute="width" constant="44" id="VVT-pv-evU"/>
                     </constraints>
                     <state key="normal">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,26 +40,24 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expand" translatesAutoresizingMaskIntoConstraints="NO" id="HRS-ii-h5V">
                     <rect key="frame" x="276" y="0.0" width="44" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="IZs-mn-fYu"/>
-                        <constraint firstAttribute="width" constant="44" id="lkD-41-x9x"/>
+                        <constraint firstAttribute="width" constant="44" id="0Mq-cX-mH4"/>
+                        <constraint firstAttribute="height" constant="44" id="oy9-ni-2bd"/>
                     </constraints>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="EZz-up-mSM" secondAttribute="trailing" id="OdR-7U-Ddn"/>
-                <constraint firstAttribute="bottom" secondItem="EZz-up-mSM" secondAttribute="bottom" id="QJr-MK-XOz"/>
-                <constraint firstAttribute="trailing" secondItem="dpI-ZF-CEq" secondAttribute="trailing" constant="54" id="cLE-tr-5xH"/>
-                <constraint firstAttribute="trailing" secondItem="HRS-ii-h5V" secondAttribute="trailing" id="goE-4q-Zyz"/>
-                <constraint firstAttribute="bottom" secondItem="HRS-ii-h5V" secondAttribute="bottom" id="o8j-eK-qPU"/>
-                <constraint firstItem="dpI-ZF-CEq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="qo4-0Y-ByB"/>
-                <constraint firstItem="dpI-ZF-CEq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="srU-sJ-nNX"/>
+                <constraint firstAttribute="bottom" secondItem="HRS-ii-h5V" secondAttribute="bottom" id="FGS-qT-PXI"/>
+                <constraint firstItem="dpI-ZF-CEq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Qve-nt-cta"/>
+                <constraint firstItem="dpI-ZF-CEq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="dyB-pR-9SC"/>
+                <constraint firstAttribute="trailing" secondItem="EZz-up-mSM" secondAttribute="trailing" id="eP3-Ag-RcN"/>
+                <constraint firstAttribute="bottom" secondItem="EZz-up-mSM" secondAttribute="bottom" id="t4x-uO-hUM"/>
+                <constraint firstAttribute="trailing" secondItem="HRS-ii-h5V" secondAttribute="trailing" id="uOZ-wW-p4T"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="expandOrCollapseButton" destination="EZz-up-mSM" id="rBb-8l-xv2"/>
                 <outlet property="expandOrCollapseImgVw" destination="HRS-ii-h5V" id="bAS-yI-Al6"/>
-                <outlet property="expandOrCollapseImgVwHeightConstraint" destination="IZs-mn-fYu" id="feU-6o-mPZ"/>
+                <outlet property="expandOrCollapseImgVwHeightConstraint" destination="oy9-ni-2bd" id="lL2-Ks-SOx"/>
                 <outlet property="headerAndFooterCellTitleLabel" destination="dpI-ZF-CEq" id="Q72-Lx-6JM"/>
             </connections>
         </view>

@@ -12,6 +12,7 @@
 #import "ExpandCollapseViewModel.h"
 
 #import "headerAndFooterView.h"
+#import "SectionHeaderAndFooterView.h"
 
 @protocol MainTableViewDelegate <NSObject>
 
@@ -19,7 +20,7 @@
 
 @end
 
-@interface ViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, TableViewCellDelegate, HeaderAndFooterCellDelegate, HeaderAndFooterViewDelegate>
+@interface ViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, HeaderAndFooterCellDelegate, HeaderAndFooterViewDelegate, SectionHeaderAndFooterViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
 

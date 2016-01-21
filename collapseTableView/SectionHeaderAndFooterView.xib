@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SectionHeaderAndFooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h8l-9Q-ArX">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3J-a1-JER">
+                            <rect key="frame" x="10" y="15" width="42" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="Jq7-AS-i1r"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Kq-QL-fKi">
+                            <rect key="frame" x="276" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="FXl-KC-9kT"/>
+                                <constraint firstAttribute="height" constant="44" id="u3Q-cs-TWW"/>
+                            </constraints>
+                            <connections>
+                                <action selector="expandOrCollapseBtnClicked:" destination="iN0-l3-epB" eventType="touchUpInside" id="dCM-vk-h1V"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expand" translatesAutoresizingMaskIntoConstraints="NO" id="24N-Fi-iT9">
+                            <rect key="frame" x="276" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="FWD-Qw-mSI"/>
+                                <constraint firstAttribute="width" constant="44" id="i0e-xh-IRI"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="24N-Fi-iT9" secondAttribute="trailing" id="0ak-Vn-Igl"/>
+                        <constraint firstItem="P3J-a1-JER" firstAttribute="top" secondItem="h8l-9Q-ArX" secondAttribute="top" constant="15" id="AYY-ey-gu6"/>
+                        <constraint firstItem="24N-Fi-iT9" firstAttribute="leading" secondItem="P3J-a1-JER" secondAttribute="trailing" constant="10" id="Jjo-fR-7s7"/>
+                        <constraint firstAttribute="bottom" secondItem="7Kq-QL-fKi" secondAttribute="bottom" id="fQ5-Bs-NV1"/>
+                        <constraint firstAttribute="trailing" secondItem="7Kq-QL-fKi" secondAttribute="trailing" id="gj6-Jo-h7B"/>
+                        <constraint firstAttribute="bottom" secondItem="24N-Fi-iT9" secondAttribute="bottom" id="iZF-cG-deZ"/>
+                        <constraint firstItem="P3J-a1-JER" firstAttribute="leading" secondItem="h8l-9Q-ArX" secondAttribute="leading" constant="10" id="kma-PJ-Yh0"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Jjo-fR-7s7"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="h8l-9Q-ArX" secondAttribute="bottom" id="7zQ-YR-kYk"/>
+                <constraint firstItem="h8l-9Q-ArX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HVV-2N-Gka"/>
+                <constraint firstItem="h8l-9Q-ArX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eQU-4w-HLU"/>
+                <constraint firstAttribute="trailing" secondItem="h8l-9Q-ArX" secondAttribute="trailing" id="sA1-xG-pDJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="expandOrCollapseBtn" destination="7Kq-QL-fKi" id="rde-De-zR3"/>
+                <outlet property="expandOrCollapseImgVw" destination="24N-Fi-iT9" id="mOd-18-mja"/>
+                <outlet property="expandOrCollapseImgVwHeightConstraint" destination="FWD-Qw-mSI" id="GPj-gU-4I7"/>
+                <outlet property="titleLabel" destination="P3J-a1-JER" id="Yx5-2K-opK"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="Expand" width="44" height="44"/>
+    </resources>
+</document>

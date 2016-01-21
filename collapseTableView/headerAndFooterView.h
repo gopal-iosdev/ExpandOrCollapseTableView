@@ -12,14 +12,13 @@
 @protocol HeaderAndFooterViewDelegate <NSObject>
 
 @optional
-//- (void) expandCellButtonTappedForHeaderCellWithSubView:(UITableViewCell *)cell;
 
 - (void) expandCellButtonTappedForHeaderView:(NSInteger)cellTag;
 
 @end
 
 
-@interface headerAndFooterView : UIView
+@interface headerAndFooterView : UITableViewHeaderFooterView
 
 
 @property (weak, nonatomic) IBOutlet UILabel *headerAndFooterCellTitleLabel;
@@ -30,6 +29,6 @@
 @property (weak, nonatomic) id<HeaderAndFooterViewDelegate> headerAndFooterViewdelegate;
 
 
-//- (void) modifyViewWithVM: (ExpandCollapseViewModel *)vm;
+- (void) modifyViewWithVM: (BOOL)isCellExpanded;
 
 @end

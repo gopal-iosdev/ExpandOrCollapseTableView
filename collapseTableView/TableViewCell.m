@@ -9,7 +9,7 @@
 #import "TableViewCell.h"
 #import "ViewController.h"
 
-@interface TableViewCell()<MainTableViewDelegate>
+@interface TableViewCell()
 
 
 
@@ -115,7 +115,7 @@
     else if ((scrollViewHeight + scrollOffset) >= (scrollContentSizeHeight - 5))
     {
         // then we are at the end
-        NSIndexPath *indexPath = [[self.cellTableView indexPathsForVisibleRows] objectAtIndex:([[self.cellTableView indexPathsForVisibleRows] count] - 1)];
+//        NSIndexPath *indexPath = [[self.cellTableView indexPathsForVisibleRows] objectAtIndex:([[self.cellTableView indexPathsForVisibleRows] count] - 1)];
 //        NSLog(@"ScrollView Reaches End, row: %ld",indexPath.row);
         self.cellTableView.scrollEnabled = NO;
         [self firecellDelegateMethodWithFlag:YES];

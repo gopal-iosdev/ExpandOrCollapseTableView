@@ -24,5 +24,11 @@
 }
 
 
+- (void) modifyViewWithVM: (BOOL)isCellExpanded;
+{
+    self.expandOrCollapseImgVwHeightConstraint.constant = isCellExpanded ? 0 : 44;
+    self.expandOrCollapseButton.userInteractionEnabled = isCellExpanded ? NO : YES;
+}
+
 
 @end

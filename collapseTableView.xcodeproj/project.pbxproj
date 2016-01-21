@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B005AAC1C5166220055F61F /* SectionHeaderAndFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B005AAB1C5166220055F61F /* SectionHeaderAndFooterView.m */; };
+		4B005AAE1C5166340055F61F /* SectionHeaderAndFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B005AAD1C5166340055F61F /* SectionHeaderAndFooterView.xib */; };
 		4B92275C1C4B511100F4EE47 /* ExpandCollapseViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B92275B1C4B511100F4EE47 /* ExpandCollapseViewModel.m */; };
 		4B92275F1C4B8C7B00F4EE47 /* headerAndFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B92275E1C4B8C7B00F4EE47 /* headerAndFooterView.m */; };
 		4B9227611C4B8C8A00F4EE47 /* headerAndFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B9227601C4B8C8A00F4EE47 /* headerAndFooterView.xib */; };
@@ -42,6 +44,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B005AAA1C5166220055F61F /* SectionHeaderAndFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderAndFooterView.h; sourceTree = "<group>"; };
+		4B005AAB1C5166220055F61F /* SectionHeaderAndFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderAndFooterView.m; sourceTree = "<group>"; };
+		4B005AAD1C5166340055F61F /* SectionHeaderAndFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SectionHeaderAndFooterView.xib; sourceTree = "<group>"; };
 		4B92275A1C4B511100F4EE47 /* ExpandCollapseViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandCollapseViewModel.h; sourceTree = "<group>"; };
 		4B92275B1C4B511100F4EE47 /* ExpandCollapseViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandCollapseViewModel.m; sourceTree = "<group>"; };
 		4B92275D1C4B8C7B00F4EE47 /* headerAndFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = headerAndFooterView.h; sourceTree = "<group>"; };
@@ -139,6 +144,9 @@
 				4B92275D1C4B8C7B00F4EE47 /* headerAndFooterView.h */,
 				4B92275E1C4B8C7B00F4EE47 /* headerAndFooterView.m */,
 				4B9227601C4B8C8A00F4EE47 /* headerAndFooterView.xib */,
+				4B005AAA1C5166220055F61F /* SectionHeaderAndFooterView.h */,
+				4B005AAB1C5166220055F61F /* SectionHeaderAndFooterView.m */,
+				4B005AAD1C5166340055F61F /* SectionHeaderAndFooterView.xib */,
 			);
 			path = collapseTableView;
 			sourceTree = "<group>";
@@ -274,6 +282,7 @@
 			files = (
 				4BBA69B41C495E3000A1B72E /* LaunchScreen.storyboard in Resources */,
 				4BBA69DB1C4961FB00A1B72E /* TableViewCell.xib in Resources */,
+				4B005AAE1C5166340055F61F /* SectionHeaderAndFooterView.xib in Resources */,
 				4BBA69B11C495E3000A1B72E /* Assets.xcassets in Resources */,
 				4BBA69E01C4965C200A1B72E /* headerAndFooterCell.xib in Resources */,
 				4B9227611C4B8C8A00F4EE47 /* headerAndFooterView.xib in Resources */,
@@ -304,6 +313,7 @@
 			files = (
 				4BBA69AC1C495E3000A1B72E /* ViewController.m in Sources */,
 				4BBA69DF1C4965C200A1B72E /* headerAndFooterCell.m in Sources */,
+				4B005AAC1C5166220055F61F /* SectionHeaderAndFooterView.m in Sources */,
 				4B92275F1C4B8C7B00F4EE47 /* headerAndFooterView.m in Sources */,
 				4BBA69DA1C4961FB00A1B72E /* TableViewCell.m in Sources */,
 				4BBA69A91C495E3000A1B72E /* AppDelegate.m in Sources */,
@@ -450,6 +460,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = collapseTableView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = United.collapseTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -461,6 +472,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = collapseTableView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = United.collapseTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
